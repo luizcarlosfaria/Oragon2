@@ -1,0 +1,32 @@
+<Project>
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>LuizCarlosFaria.Oragon2</RootNamespace>
+        <Authors>luizcarlosfaria</Authors>
+        <Company>gaGO.io</Company>
+        <Product>Oragon2</Product>
+        <PackageProjectUrl>https://github.com/luizcarlosfaria/Oragon2/</PackageProjectUrl>
+        <PackageIcon>Oragon-Architecture-Penknife.export-150x150.png</PackageIcon>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <RepositoryUrl>https://github.com/luizcarlosfaria/Oragon2/</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+    </PropertyGroup>
+
+    <ItemGroup>
+        
+        <None Include="..\.editorconfig" Link=".editorconfig" />
+        
+        <None Include="..\..\Assets\icon\Oragon-Architecture-Penknife.export-150x150.png">
+            <Pack>True</Pack>
+            <PackagePath>\</PackagePath>
+        </None>
+        <None Include="..\..\README.md">
+            <Pack>True</Pack>
+            <PackagePath>\</PackagePath>
+        </None>
+    </ItemGroup>
+
+</Project>
