@@ -1,17 +1,17 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace LuizCarlosFaria.Oragon2.RingBuffer;
+namespace LuizCarlosFaria.Oragon2.RingBuffer.Static;
 
-public class AccquisitonController<T> : IAccquisitonController<T>
+public class StaticRingBufferAccquisitonController<T> : IAccquisitonController<T>
 {
-    private readonly RingBuffer<T> ringBuffer;
-    private readonly ILogger<RingBuffer<T>> logger;
+    private readonly StaticRingBuffer<T> ringBuffer;
+    private readonly ILogger<StaticRingBuffer<T>> logger;
     private readonly TimeSpan waitTime;
     private readonly Func<T> factoryFunc;
     private readonly Func<T, bool> checkFunc;
     private readonly Action<T> disposeAction;
 
-    internal AccquisitonController(RingBuffer<T> ringBuffer, ILogger<RingBuffer<T>> logger, TimeSpan waitTime, Func<T> factoryFunc, Func<T, bool> checkFunc, Action<T> disposeAction)
+    internal StaticRingBufferAccquisitonController(StaticRingBuffer<T> ringBuffer, ILogger<StaticRingBuffer<T>> logger, TimeSpan waitTime, Func<T> factoryFunc, Func<T, bool> checkFunc, Action<T> disposeAction)
     {
         this.ringBuffer = ringBuffer;
         this.logger = logger;
@@ -30,9 +30,7 @@ public class AccquisitonController<T> : IAccquisitonController<T>
         while (this.ringBuffer.VirtualCount == 0 || this.ringBuffer.TryDequeue(out buferedItem) is false)
         {
             if (tryCount++ < Constants.MaxRetryTimes)
-            {
                 throw new InvalidOperationException("Retry exceed 1000 times");
-            }
             this.logger.LogTrace("RingBuffer | Waiting... VirtualCount:{count} Capacity:{capacity}", this.ringBuffer.VirtualCount, this.ringBuffer.Capacity);
 
             Thread.Sleep(this.waitTime);
@@ -48,9 +46,7 @@ public class AccquisitonController<T> : IAccquisitonController<T>
     public void Dispose()
     {
         if (this.checkFunc(this.Instance))
-        {
             this.ringBuffer.Enqueue(this.Instance);
-        }
         else
         {
             this.ringBuffer.Enqueue(this.factoryFunc());

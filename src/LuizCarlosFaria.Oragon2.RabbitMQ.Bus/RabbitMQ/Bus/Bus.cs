@@ -10,12 +10,12 @@ namespace LuizCarlosFaria.Oragon2.RabbitMQ.Bus;
 
 public class Bus : IEventBus, ICommandBus
 {
-    private readonly RingBuffer<IModel> modelBuffer;
+    private readonly IRingBuffer<IModel> modelBuffer;
     private readonly IAmqpSerializer serializer;
     private readonly ActivitySource activitySource;
     private readonly IRouteResolver routeResolver;
 
-    public Bus(RingBuffer<IModel> modelBuffer, IAmqpSerializer serializer, ActivitySource activitySource, IRouteResolver routeResolver)
+    public Bus(IRingBuffer<IModel> modelBuffer, IAmqpSerializer serializer, ActivitySource activitySource, IRouteResolver routeResolver)
     {
         this.modelBuffer = modelBuffer;
         this.serializer = serializer;
