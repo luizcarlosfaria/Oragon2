@@ -1,7 +1,8 @@
-﻿using System;
+﻿using LuizCarlosFaria.Oragon2.RabbitMQ.Bus;
+using System;
 using System.Collections.Generic;
 
-namespace AmqpAdapters.Bus.Routers;
+namespace LuizCarlosFaria.Oragon2.RabbitMQ.Bus.Routers;
 
 public class TypeBasedRouter : IRouteResolver
 {
@@ -18,7 +19,7 @@ public class TypeBasedRouter : IRouteResolver
     public Route ResolveRoute(IRouteable routeable)
     {
         if (routeable == null) throw new ArgumentNullException(nameof(routeable));
-        
+
         Type type = routeable.GetType();
 
         return this.Routes.ContainsKey(type)

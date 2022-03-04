@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AmqpAdapters;
+namespace LuizCarlosFaria.Oragon2.RabbitMQ;
 
 [Serializable]
 public class AmqpRpcRemoteException : Exception

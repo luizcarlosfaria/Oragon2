@@ -1,4 +1,4 @@
-﻿namespace AmqpAdapters.Bus.Routers;
+﻿namespace LuizCarlosFaria.Oragon2.RabbitMQ.Bus.Routers;
 
 public interface IRouteResolver
 {

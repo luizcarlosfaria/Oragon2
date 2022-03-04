@@ -1,12 +1,12 @@
 using AmqpAdapters.Bus.Routers;
-using AmqpAdapters.Serialization;
+using LuizCarlosFaria.Oragon2.RabbitMQ.Serialization;
 using Moq;
 using System;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using Xunit;
 
-namespace AmqpAdaptersTests;
+namespace LuizCarlosFaria.Oragon2;
 public class SerializationTests
 {
     ActivitySource activitySource = new ActivitySource("a", "b");

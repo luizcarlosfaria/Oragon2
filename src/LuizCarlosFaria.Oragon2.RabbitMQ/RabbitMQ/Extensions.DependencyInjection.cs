@@ -1,6 +1,6 @@
-﻿using AmqpAdapters.Configuration;
-using AmqpAdapters.Rpc;
-using AmqpAdapters.Serialization;
+﻿using LuizCarlosFaria.Oragon2.RabbitMQ.Configuration;
+using LuizCarlosFaria.Oragon2.RabbitMQ.Rpc;
+using LuizCarlosFaria.Oragon2.RabbitMQ.Serialization;
 using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
 using System;

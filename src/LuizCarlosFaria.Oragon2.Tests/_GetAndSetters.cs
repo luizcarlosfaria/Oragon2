@@ -1,10 +1,10 @@
-using AmqpAdapters.Bus.Routers;
 using AmqpAdapters.Rpc;
+using LuizCarlosFaria.Oragon2.RabbitMQ.Bus.Routers;
 using System;
 using System.Reflection;
 using Xunit;
 
-namespace LuizCarlosFaria.Oragon2.Tests;
+namespace LuizCarlosFaria.Oragon2;
 
 
 public class GetAndSetters

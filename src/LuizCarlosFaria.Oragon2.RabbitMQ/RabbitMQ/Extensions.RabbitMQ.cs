@@ -1,4 +1,5 @@
-﻿using RabbitMQ.Client;
+﻿using LuizCarlosFaria.Oragon2.RabbitMQ;
+using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
 using System.Text;

@@ -1,4 +1,4 @@
-﻿namespace AmqpAdapters.Consumer;
+﻿namespace LuizCarlosFaria.Oragon2.RabbitMQ.Consumer;
 
 public enum QueueServiceWorkerMode
 {

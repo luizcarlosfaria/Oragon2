@@ -1,5 +1,7 @@
-﻿using AmqpAdapters.Serialization;
+﻿using AmqpAdapters;
 using Humanizer;
+using LuizCarlosFaria.Oragon2.RabbitMQ;
+using LuizCarlosFaria.Oragon2.RabbitMQ.Serialization;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
@@ -7,7 +9,7 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace AmqpAdapters.Rpc;
+namespace LuizCarlosFaria.Oragon2.RabbitMQ.Rpc;
 
 public partial class SimpleAmqpRpc
 {
@@ -120,9 +122,7 @@ public partial class SimpleAmqpRpc
             try
             {
                 if (!localQueue.TryTake(out responseModel, receiveTimeout))
-                {
                     throw new TimeoutException($"The operation has timed-out after {receiveTimeout.Humanize()} waiting a RPC response at {queue.QueueName} queue.");
-                }
             }
             finally
             {

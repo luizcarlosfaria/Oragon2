@@ -1,4 +1,5 @@
-using AmqpAdapters.Serialization;
+using AmqpAdapters;
+using LuizCarlosFaria.Oragon2.RabbitMQ.Serialization;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -6,7 +7,7 @@ using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace AmqpAdapters.Consumer;
+namespace LuizCarlosFaria.Oragon2.RabbitMQ.Consumer;
 
 
 public class AsyncQueueServiceWorker<TRequest, TResponse> : QueueServiceWorkerBase

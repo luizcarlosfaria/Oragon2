@@ -1,5 +1,6 @@
-﻿using AmqpAdapters.Serialization;
+﻿using AmqpAdapters;
 using Humanizer;
+using LuizCarlosFaria.Oragon2.RabbitMQ.Serialization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;
@@ -7,7 +8,7 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Exceptions;
 using System;
 
-namespace AmqpAdapters.Configuration;
+namespace LuizCarlosFaria.Oragon2.RabbitMQ.Configuration;
 
 public class RabbitMQConfigurationBuilder
 {
@@ -52,15 +53,13 @@ public class RabbitMQConfigurationBuilder
 
         this.connectMaxAttempts = connectMaxAttempts;
         if (produceWaitConnectWait != null)
-        {
             this.produceWaitConnectWait = produceWaitConnectWait;
-        }
         return this;
     }
 
     public void Build()
     {
-        if(this.configuration == null) throw new ArgumentNullException(nameof(this.configuration));
+        if (this.configuration == null) throw new ArgumentNullException(nameof(this.configuration));
 
         this.services.AddTransient(sp => sp.GetRequiredService<IConnection>().CreateModel());
 

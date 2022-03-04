@@ -8,7 +8,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AmqpAdapters.Consumer;
+namespace LuizCarlosFaria.Oragon2.RabbitMQ.Consumer;
 
 
 public abstract class QueueServiceWorkerBase : BackgroundService

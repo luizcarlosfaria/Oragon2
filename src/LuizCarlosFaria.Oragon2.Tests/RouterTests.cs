@@ -1,8 +1,8 @@
-using AmqpAdapters.Bus.Routers;
+using LuizCarlosFaria.Oragon2.RabbitMQ.Bus.Routers;
 using System;
 using Xunit;
 
-namespace AmqpAdaptersTests;
+namespace LuizCarlosFaria.Oragon2;
 public class RouterTests
 {
     TypeBasedRouter typeBasedRouter = new TypeBasedRouter();
@@ -16,9 +16,7 @@ public class RouterTests
         functionBasedRouter.AddRoute(routable =>
         {
             if (routable is Exemplo1Event)
-            {
                 return new Route() { ExchangeName = "a", RoutingKey = "b" };
-            }
             return null;
         });
 

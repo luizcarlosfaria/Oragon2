@@ -3,7 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Text;
 
-namespace AmqpAdapters.Serialization;
+namespace LuizCarlosFaria.Oragon2.RabbitMQ.Serialization;
 
 public class NewtonsoftAmqpSerializer : AmqpBaseSerializer
 {

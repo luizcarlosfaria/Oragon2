@@ -1,11 +1,12 @@
-﻿using AmqpAdapters.Bus.Routers;
-using AmqpAdapters.Serialization;
+﻿using AmqpAdapters;
+using LuizCarlosFaria.Oragon2.RabbitMQ.Bus.Routers;
+using LuizCarlosFaria.Oragon2.RabbitMQ.Serialization;
 using LuizCarlosFaria.Oragon2.RingBuffer;
 using RabbitMQ.Client;
 using System;
 using System.Diagnostics;
 
-namespace AmqpAdapters.Bus;
+namespace LuizCarlosFaria.Oragon2.RabbitMQ.Bus;
 
 public class Bus : IEventBus, ICommandBus
 {
@@ -55,9 +56,9 @@ public class Bus : IEventBus, ICommandBus
         currentActivity.AddTag("CorrelationId", requestProperties.CorrelationId);
 
         modelBuffered.Instance.BasicPublish(
-            route.ExchangeName, 
-            route.RoutingKey, 
-            requestProperties, 
+            route.ExchangeName,
+            route.RoutingKey,
+            requestProperties,
             this.serializer.Serialize(requestProperties, requestModel)
         );
 

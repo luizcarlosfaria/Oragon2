@@ -1,9 +1,10 @@
-﻿using RabbitMQ.Client;
+﻿using AmqpAdapters;
+using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
 using System.Diagnostics;
 
-namespace AmqpAdapters.Serialization;
+namespace LuizCarlosFaria.Oragon2.RabbitMQ.Serialization;
 
 public abstract class AmqpBaseSerializer : IAmqpSerializer
 {
