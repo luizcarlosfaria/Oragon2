@@ -1,15 +1,17 @@
-using AmqpAdapters.Bus.Routers;
 using LuizCarlosFaria.Oragon2.RabbitMQ.Serialization;
 using Moq;
+using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 using System;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using Xunit;
+using RabbitMQ = RabbitMQ;
 
 namespace LuizCarlosFaria.Oragon2;
 public class SerializationTests
 {
-    ActivitySource activitySource = new ActivitySource("a", "b");
+    readonly ActivitySource activitySource = new("a", "b");
 
 
     [Theory]
@@ -27,12 +29,14 @@ public class SerializationTests
             TimeSpan = TimeSpan.FromTicks(1213212)
         };
 
-        IAmqpSerializer serializer = (IAmqpSerializer)Activator.CreateInstance(type, this.activitySource);
+        IAmqpSerializer? serializer = (IAmqpSerializer)Activator.CreateInstance(type, this.activitySource)!;
 
-        var mock = new Mock<RabbitMQ.Client.IBasicProperties>();
+        if (serializer == null) throw new InvalidOperationException("Serializer criado não pode ser nulo");
+
+        var mock = new Mock<IBasicProperties>();
 
         byte[] eventoJsonBin = serializer.Serialize(mock.Object, objeto1);
-        var objeto2 = serializer.Deserialize<ObjectToSerialize>(new RabbitMQ.Client.Events.BasicDeliverEventArgs()
+        var objeto2 = serializer.Deserialize<ObjectToSerialize>(new BasicDeliverEventArgs()
         {
             Body = eventoJsonBin,
             BasicProperties = mock.Object
@@ -53,9 +57,9 @@ public class SerializationTests
     [InlineData(typeof(SystemTextJsonAmqpSerializer))]
     public void ExceptionsOnSerializeTests(Type type)
     {
-        IAmqpSerializer serializer = (IAmqpSerializer)Activator.CreateInstance(type, this.activitySource);
+        IAmqpSerializer serializer = (IAmqpSerializer)Activator.CreateInstance(type, this.activitySource)!;
 
-        var mock = new Mock<RabbitMQ.Client.IBasicProperties>();
+        var mock = new Mock<IBasicProperties>();
 
         Assert.ThrowsAny<Exception>(() =>
         {
@@ -71,13 +75,13 @@ public class SerializationTests
     [InlineData(typeof(SystemTextJsonAmqpSerializer))]
     public void ExceptionsOnDeserializeTests(Type type)
     {
-        IAmqpSerializer serializer = (IAmqpSerializer)Activator.CreateInstance(type, this.activitySource);
+        IAmqpSerializer serializer = (IAmqpSerializer)Activator.CreateInstance(type, this.activitySource)!;
 
-        var mock = new Mock<RabbitMQ.Client.IBasicProperties>();
+        var mock = new Mock<IBasicProperties>();
 
         Assert.ThrowsAny<Exception>(() =>
         {
-            serializer.Deserialize<SqlConnection>(new RabbitMQ.Client.Events.BasicDeliverEventArgs()
+            serializer.Deserialize<SqlConnection>(new BasicDeliverEventArgs()
             {
                 BasicProperties = mock.Object,
                 Body = System.Text.Encoding.UTF8.GetBytes(/*lang=json,strict*/ "{ \"Id\" : 1, \"ConnectionString\" : \"teste\" }")

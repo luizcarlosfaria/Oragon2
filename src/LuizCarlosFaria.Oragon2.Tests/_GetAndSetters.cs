@@ -1,4 +1,3 @@
-using AmqpAdapters.Rpc;
 using LuizCarlosFaria.Oragon2.RabbitMQ.Bus.Routers;
 using System;
 using System.Reflection;

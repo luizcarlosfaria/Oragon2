@@ -16,13 +16,13 @@ public class AsyncQueueServiceWorker<TRequest, TResponse> : QueueServiceWorkerBa
 
     protected readonly IAmqpSerializer serializer;
     protected readonly ActivitySource activitySource;
-    protected readonly Func<TRequest, TResponse> dispatchFunc;
+    protected readonly Func<TRequest?, TResponse> dispatchFunc;
 
 
     #region Constructors 
 
 
-    public AsyncQueueServiceWorker(ILogger logger, IConnection connection, IAmqpSerializer serializer, ActivitySource activitySource, string queueName, ushort prefetchCount, Func<TRequest, TResponse> dispatchFunc)
+    public AsyncQueueServiceWorker(ILogger logger, IConnection connection, IAmqpSerializer serializer, ActivitySource activitySource, string queueName, ushort prefetchCount, Func<TRequest?, TResponse> dispatchFunc)
         : base(logger, connection, queueName, prefetchCount)
     {
         this.serializer = serializer;
@@ -35,7 +35,7 @@ public class AsyncQueueServiceWorker<TRequest, TResponse> : QueueServiceWorkerBa
 
     protected override IBasicConsumer BuildConsumer()
     {
-        AsyncEventingBasicConsumer consumer = new AsyncEventingBasicConsumer(this.Model);
+        AsyncEventingBasicConsumer consumer = new(this.Model);
 
         consumer.Received += this.Receive;
 
@@ -48,12 +48,12 @@ public class AsyncQueueServiceWorker<TRequest, TResponse> : QueueServiceWorkerBa
         if (receivedItem.BasicProperties == null) throw new ArgumentNullException(nameof(receivedItem.BasicProperties));
 
         using Activity receiveActivity = this.activitySource.SafeStartActivity("AsyncQueueServiceWorker.Receive", ActivityKind.Server);
-        receiveActivity?.SetParentId(receivedItem.BasicProperties.GetTraceId(), receivedItem.BasicProperties.GetSpanId(), ActivityTraceFlags.Recorded);
-        receiveActivity?.AddTag("Queue", this.QueueName);
-        receiveActivity?.AddTag("MessageId", receivedItem.BasicProperties.MessageId);
-        receiveActivity?.AddTag("CorrelationId", receivedItem.BasicProperties.CorrelationId);
+        receiveActivity.SetParentId(receivedItem.BasicProperties.GetTraceId(), receivedItem.BasicProperties.GetSpanId(), ActivityTraceFlags.Recorded);
+        receiveActivity.AddTag("Queue", this.QueueName);
+        receiveActivity.AddTag("MessageId", receivedItem.BasicProperties.MessageId);
+        receiveActivity.AddTag("CorrelationId", receivedItem.BasicProperties.CorrelationId);
 
-        PostConsumeAction postReceiveAction = this.TryDeserialize(receivedItem, out TRequest request);
+        PostConsumeAction postReceiveAction = this.TryDeserialize(receivedItem, out TRequest? request);
 
         if (postReceiveAction == PostConsumeAction.None)
         {
@@ -79,7 +79,7 @@ public class AsyncQueueServiceWorker<TRequest, TResponse> : QueueServiceWorkerBa
         receiveActivity?.SetEndTime(DateTime.UtcNow);
     }
 
-    private PostConsumeAction TryDeserialize(BasicDeliverEventArgs receivedItem, out TRequest request)
+    private PostConsumeAction TryDeserialize(BasicDeliverEventArgs receivedItem, out TRequest? request)
     {
         if (receivedItem is null) throw new ArgumentNullException(nameof(receivedItem));
         PostConsumeAction postReceiveAction = PostConsumeAction.None;
@@ -99,7 +99,7 @@ public class AsyncQueueServiceWorker<TRequest, TResponse> : QueueServiceWorkerBa
         return postReceiveAction;
     }
 
-    protected virtual async Task<PostConsumeAction> Dispatch(BasicDeliverEventArgs receivedItem, Activity receiveActivity, TRequest request)
+    protected virtual async Task<PostConsumeAction> Dispatch(BasicDeliverEventArgs receivedItem, Activity receiveActivity, TRequest? request)
     {
         if (receivedItem is null) throw new ArgumentNullException(nameof(receivedItem));
 

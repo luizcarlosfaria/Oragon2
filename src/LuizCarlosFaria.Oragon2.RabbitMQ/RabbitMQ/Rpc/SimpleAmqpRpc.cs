@@ -43,7 +43,7 @@ public partial class SimpleAmqpRpc
 
         Task sendTask = Task.Run(() => { this.Send(exchangeName, routingKey, requestModel, queue.QueueName); });
 
-        TResponse responseModel = default;
+        TResponse responseModel = default!;
 
         Task receiveTask = Task.Run(() => { responseModel = this.Receive<TResponse>(queue, receiveTimeout ?? this.defaultTimeout); });
 
@@ -59,7 +59,7 @@ public partial class SimpleAmqpRpc
         return this.model.QueueDeclare(queue: string.Empty, durable: false, exclusive: true, autoDelete: true, arguments: null);
     }
 
-    protected virtual void Send<TRequest>(string exchangeName, string routingKey, TRequest requestModel, string callbackQueueName = null)
+    protected virtual void Send<TRequest>(string exchangeName, string routingKey, TRequest requestModel, string? callbackQueueName = null)
     {
         using Activity currentActivity = this.activitySource.SafeStartActivity("SimpleAmqpRpc.Send", ActivityKind.Client);
         currentActivity.AddTag("Exchange", exchangeName);
@@ -81,9 +81,9 @@ public partial class SimpleAmqpRpc
 
     protected virtual TResponse Receive<TResponse>(QueueDeclareOk queue, TimeSpan receiveTimeout)
     {
-        using (BlockingCollection<AmqpResponse<TResponse>> localQueue = new BlockingCollection<AmqpResponse<TResponse>>())
+        using (BlockingCollection<AmqpResponse<TResponse>> localQueue = new())
         {
-            EventingBasicConsumer consumer = new EventingBasicConsumer(this.model);
+            EventingBasicConsumer consumer = new(this.model);
 
             consumer.Received += (sender, receivedItem) =>
             {
@@ -100,7 +100,7 @@ public partial class SimpleAmqpRpc
                 }
                 else
                 {
-                    TResponse result = default;
+                    TResponse result = default!;
                     try
                     {
                         result = this.serializer.Deserialize<TResponse>(receivedItem);
@@ -118,7 +118,7 @@ public partial class SimpleAmqpRpc
             };
 
             string consumerTag = this.model.BasicConsume(queue.QueueName, true, consumer);
-            AmqpResponse<TResponse> responseModel;
+            AmqpResponse<TResponse>? responseModel;
             try
             {
                 if (!localQueue.TryTake(out responseModel, receiveTimeout))

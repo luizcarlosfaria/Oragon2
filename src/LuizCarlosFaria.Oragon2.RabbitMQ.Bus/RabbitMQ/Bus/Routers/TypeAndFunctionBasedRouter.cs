@@ -19,7 +19,7 @@ public class TypeAndFunctionBasedRouter : IRouteResolver
         if (routeable == null) throw new ArgumentNullException(nameof(routeable));
 
         Type type = routeable.GetType();
-        Route route = default;
+        Route? route = default;
         if (this.Routes.ContainsKey(type))
             route = this.Routes[type](routeable);
         return route ?? throw new InvalidOperationException("Route not found");

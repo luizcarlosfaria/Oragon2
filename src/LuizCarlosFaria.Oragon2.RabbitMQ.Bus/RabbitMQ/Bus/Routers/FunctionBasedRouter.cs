@@ -5,10 +5,10 @@ using System.Collections.Generic;
 namespace LuizCarlosFaria.Oragon2.RabbitMQ.Bus.Routers;
 public class FunctionBasedRouter : IRouteResolver
 {
-    private List<Func<IRouteable, Route>> Routes { get; set; } = new List<Func<IRouteable, Route>>();
+    private List<Func<IRouteable, Route?>> Routes { get; set; } = new();
 
 
-    public FunctionBasedRouter AddRoute(Func<IRouteable, Route> func)
+    public FunctionBasedRouter AddRoute(Func<IRouteable, Route?> func)
     {
         if (func == null) throw new ArgumentNullException(nameof(func));
         this.Routes.Add(func);
@@ -21,7 +21,7 @@ public class FunctionBasedRouter : IRouteResolver
 
         foreach (var routeFunction in this.Routes)
         {
-            Route route = routeFunction(routeable);
+            Route? route = routeFunction(routeable);
             if (route != null)
                 return route;
         }

@@ -21,7 +21,8 @@ public static class WorkerExtensions
     /// <param name="services">Dependency Injection Service Collection</param>
     /// <param name="queueName">Name of queue</param>
     /// <param name="functionToExecute">Function to execute when any message are consumed from queue</param>
-    public static void AddAsyncRpcQueueConsumer<TService, TRequest, TResponse>(this IServiceCollection services, string queueName, ushort prefetchCount, Func<TService, TRequest, Task<TResponse>> functionToExecute)
+    public static void AddAsyncRpcQueueConsumer<TService, TRequest, TResponse>(this IServiceCollection services, string queueName, ushort prefetchCount, Func<TService, TRequest?, Task<TResponse>> functionToExecute)
+        where TService : notnull
     {
         if (services is null) throw new ArgumentNullException(nameof(services));
         if (string.IsNullOrEmpty(queueName)) throw new ArgumentException($"'{nameof(queueName)}' cannot be null or empty.", nameof(queueName));
@@ -30,13 +31,13 @@ public static class WorkerExtensions
 
         services.AddSingleton<IHostedService>(sp =>
                 new AsyncRpcQueueServiceWorker<TRequest, TResponse>(
-                    sp.GetService<ILogger<AsyncRpcQueueServiceWorker<TRequest, TResponse>>>(),
+                    sp.GetRequiredService<ILogger<AsyncRpcQueueServiceWorker<TRequest, TResponse>>>(),
                     sp.GetRequiredService<IConnection>(),
                     sp.GetRequiredService<IAmqpSerializer>(),
                     sp.GetRequiredService<ActivitySource>(),
                     queueName,
                     prefetchCount,
-                    (request) => functionToExecute(sp.GetService<TService>(), request)
+                    (request) => functionToExecute(sp.GetRequiredService<TService>(), request)
                 )
             );
     }
@@ -50,7 +51,8 @@ public static class WorkerExtensions
     /// <param name="services">Dependency Injection Service Collection</param>
     /// <param name="queueName">Name of queue</param>
     /// <param name="functionToExecute">Function to execute when any message are consumed from queue</param>
-    public static void AddAsyncQueueConsumer<TService, TRequest>(this IServiceCollection services, string queueName, ushort prefetchCount, Func<TService, TRequest, Task> functionToExecute)
+    public static void AddAsyncQueueConsumer<TService, TRequest>(this IServiceCollection services, string queueName, ushort prefetchCount, Func<TService, TRequest?, Task> functionToExecute)
+        where TService : notnull
     {
         if (services is null) throw new ArgumentNullException(nameof(services));
         if (string.IsNullOrEmpty(queueName)) throw new ArgumentException($"'{nameof(queueName)}' cannot be null or empty.", nameof(queueName));
@@ -59,13 +61,13 @@ public static class WorkerExtensions
 
         services.AddSingleton<IHostedService>(sp =>
                 new AsyncQueueServiceWorker<TRequest, Task>(
-                    sp.GetService<ILogger<AsyncQueueServiceWorker<TRequest, Task>>>(),
+                    sp.GetRequiredService<ILogger<AsyncQueueServiceWorker<TRequest, Task>>>(),
                     sp.GetRequiredService<IConnection>(),
                     sp.GetRequiredService<IAmqpSerializer>(),
                     sp.GetRequiredService<ActivitySource>(),
                     queueName,
                     prefetchCount,
-                    (request) => functionToExecute(sp.GetService<TService>(), request)
+                    (request) => functionToExecute(sp.GetRequiredService<TService>(), request)
                 )
             );
     }

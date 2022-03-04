@@ -8,7 +8,7 @@ namespace AmqpAdapters;
 
 public static partial class Extensions
 {
-    public static IBasicProperties SetMessageId(this IBasicProperties basicProperties, string messageId = null)
+    public static IBasicProperties SetMessageId(this IBasicProperties basicProperties, string? messageId = null)
     {
         if (basicProperties is null) throw new ArgumentNullException(nameof(basicProperties));
         basicProperties.MessageId = messageId ?? Guid.NewGuid().ToString("D");
@@ -17,10 +17,11 @@ public static partial class Extensions
 
     public static IBasicProperties SetCorrelationId(this IBasicProperties basicProperties, IBasicProperties originalBasicProperties)
     {
-        if (basicProperties is null) throw new ArgumentNullException(nameof(basicProperties));
-        if (originalBasicProperties is null) throw new ArgumentNullException(nameof(originalBasicProperties));
-
-        return basicProperties.SetCorrelationId(originalBasicProperties.MessageId);
+        return basicProperties is null
+            ? throw new ArgumentNullException(nameof(basicProperties))
+            : originalBasicProperties is null
+            ? throw new ArgumentNullException(nameof(originalBasicProperties))
+            : basicProperties.SetCorrelationId(originalBasicProperties.MessageId);
     }
 
     public static IBasicProperties SetCorrelationId(this IBasicProperties basicProperties, string correlationId)
@@ -39,7 +40,7 @@ public static partial class Extensions
         return basicProperties;
     }
 
-    public static IBasicProperties SetReplyTo(this IBasicProperties basicProperties, string replyTo = null)
+    public static IBasicProperties SetReplyTo(this IBasicProperties basicProperties, string? replyTo = null)
     {
         if (basicProperties is null) throw new ArgumentNullException(nameof(basicProperties));
         
@@ -51,7 +52,7 @@ public static partial class Extensions
         return basicProperties;
     }
 
-    public static IBasicProperties SetAppId(this IBasicProperties basicProperties, string appId = null)
+    public static IBasicProperties SetAppId(this IBasicProperties basicProperties, string? appId = null)
     {
         if (basicProperties is null) throw new ArgumentNullException(nameof(basicProperties));
         
@@ -63,23 +64,22 @@ public static partial class Extensions
         return basicProperties;
     }
 
-    private static string AsString(this object objectToConvert)
+    private static string? AsString(this object objectToConvert)
     {
         return objectToConvert != null ? Encoding.UTF8.GetString((byte[])objectToConvert) : null;
     }
 
-    public static string AsString(this IDictionary<string, object> dic, string key)
+    public static string? AsString(this IDictionary<string, object>? dic, string key)
     {
-        object content = dic?[key];
-        return (content != null) ? Encoding.UTF8.GetString((byte[])content) : null;
+        return dic != null && dic.ContainsKey(key) ? dic[key].AsString() : null;
     }
 
-    public static List<string> AsStringList(this object objectToConvert)
+    public static List<string?> AsStringList(this object objectToConvert)
     {
         if (objectToConvert is null) throw new ArgumentNullException(nameof(objectToConvert));
         List<object> routingKeyList = ((List<object>)objectToConvert);
 
-        List<string> items = routingKeyList.ConvertAll(key => key.AsString());
+        List<string?> items = routingKeyList.ConvertAll(key => key.AsString());
 
         return items;
     }
@@ -103,13 +103,13 @@ public static partial class Extensions
 
     public static bool TryReconstructException(this IBasicProperties basicProperties, out AmqpRpcRemoteException remoteException)
     {
-        remoteException = default;
+        remoteException = default!;
         if (basicProperties?.Headers?.ContainsKey("exception.type") ?? false)
         {
-            string exceptionTypeString = basicProperties.Headers.AsString("exception.type");
-            string exceptionMessage = basicProperties.Headers.AsString("exception.message");
-            string exceptionStackTrace = basicProperties.Headers.AsString("exception.stacktrace");
-            Exception exceptionInstance = (Exception)Activator.CreateInstance(Type.GetType(exceptionTypeString) ?? typeof(Exception), exceptionMessage);
+            string? exceptionTypeString = basicProperties.Headers.AsString("exception.type");
+            string? exceptionMessage = basicProperties.Headers.AsString("exception.message");
+            string? exceptionStackTrace = basicProperties.Headers.AsString("exception.stacktrace");
+            Exception exceptionInstance = (Exception)Activator.CreateInstance(Type.GetType(exceptionTypeString ?? "x") ?? typeof(Exception), exceptionMessage)!;
             remoteException = new AmqpRpcRemoteException("Remote consumer report a exception during execution", exceptionStackTrace, exceptionInstance);
             return true;
         }
@@ -123,17 +123,17 @@ public static partial class Extensions
         return (List<object>)basicProperties.Headers["x-death"];
     }
 
-    public static string GetQueueName(this Dictionary<string, object> xdeath)
+    public static string? GetQueueName(this Dictionary<string, object> xdeath)
     {
         return xdeath.AsString("queue");
     }
 
-    public static string GetExchangeName(this Dictionary<string, object> xdeath)
+    public static string? GetExchangeName(this Dictionary<string, object> xdeath)
     {
         return xdeath.AsString("exchange");
     }
 
-    public static List<string> GetRoutingKeys(this Dictionary<string, object> xdeath)
+    public static List<string?> GetRoutingKeys(this Dictionary<string, object> xdeath)
     {
         return xdeath["routing-keys"].AsStringList();
     }

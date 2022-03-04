@@ -17,21 +17,23 @@ public abstract class AmqpBaseSerializer : IAmqpSerializer
         this.name = name;
     }
 
-    protected abstract TResponse DeserializeInternal<TResponse>(IBasicProperties basicProperties, ReadOnlyMemory<byte> body);
+    protected abstract T DeserializeInternal<T>(IBasicProperties basicProperties, ReadOnlyMemory<byte> body);
 
     protected abstract byte[] SerializeInternal<T>(IBasicProperties basicProperties, T objectToSerialize);
 
 
-    public TResponse Deserialize<TResponse>(BasicDeliverEventArgs eventArgs)
+    public T Deserialize<T>(BasicDeliverEventArgs eventArgs)
     {
         if (eventArgs is null) throw new ArgumentNullException(nameof(eventArgs));
+#pragma warning disable CA2208 // Instantiate argument exceptions correctly
         if (eventArgs.BasicProperties is null) throw new ArgumentNullException(nameof(eventArgs.BasicProperties));
+#pragma warning restore CA2208 // Instantiate argument exceptions correctly
 
         using Activity receiveActivity = this.activitySource.SafeStartActivity($"{this.name}.Deserialize", ActivityKind.Internal);
-        TResponse returnValue = default;
+        T? returnValue = default;
         try
         {
-            returnValue = this.DeserializeInternal<TResponse>(eventArgs.BasicProperties, eventArgs.Body);
+            returnValue = this.DeserializeInternal<T>(eventArgs.BasicProperties, eventArgs.Body);
         }
         catch (Exception ex)
         {
@@ -45,12 +47,12 @@ public abstract class AmqpBaseSerializer : IAmqpSerializer
         return returnValue;
     }
 
-    public byte[] Serialize<T>(IBasicProperties basicProperties, T objectToSerialize)
+    public byte[] Serialize<T>(IBasicProperties basicProperties, T? objectToSerialize)
     {
         if (basicProperties is null) throw new ArgumentNullException(nameof(basicProperties));
 
         using Activity receiveActivity = this.activitySource.SafeStartActivity($"{this.name}.Serialize", ActivityKind.Internal);
-        byte[] returnValue = default;
+        byte[] returnValue;
         try
         {
             returnValue = this.SerializeInternal(basicProperties, objectToSerialize);

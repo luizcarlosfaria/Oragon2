@@ -12,13 +12,17 @@ public class SystemTextJsonAmqpSerializer : AmqpBaseSerializer
     public SystemTextJsonAmqpSerializer(ActivitySource activitySource) : base(activitySource, "SystemTextJsonAmqpSerializer") { }
 
 
-    protected override TResponse DeserializeInternal<TResponse>(IBasicProperties basicProperties, ReadOnlyMemory<byte> body)
+    protected override T DeserializeInternal<T>(IBasicProperties basicProperties, ReadOnlyMemory<byte> body)
     {
+        if (body.IsEmpty) return default!;
+
         string message = Encoding.UTF8.GetString(body.ToArray());
-        return System.Text.Json.JsonSerializer.Deserialize<TResponse>(message);
+
+        return System.Text.Json.JsonSerializer.Deserialize<T>(message)!;
     }
 
-    protected override byte[] SerializeInternal<T>(IBasicProperties basicProperties, T objectToSerialize)
+    
+    protected override byte[] SerializeInternal<T>(IBasicProperties basicProperties, T objectToSerialize) where T : default
     {
         return Encoding.UTF8.GetBytes(System.Text.Json.JsonSerializer.Serialize(objectToSerialize));
     }

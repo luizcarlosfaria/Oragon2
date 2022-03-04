@@ -46,7 +46,7 @@ public class RabbitMQConfigurationBuilder
         return this;
     }
 
-    public RabbitMQConfigurationBuilder WithConnectMaxAttempts(int connectMaxAttempts, Func<int, TimeSpan> produceWaitConnectWait = null)
+    public RabbitMQConfigurationBuilder WithConnectMaxAttempts(int connectMaxAttempts, Func<int, TimeSpan>? produceWaitConnectWait = null)
     {
         if (connectMaxAttempts < 0) throw new ArgumentOutOfRangeException(nameof(connectMaxAttempts), "ConnectMaxAttempts must bem greater or equal zero.");
         if (produceWaitConnectWait == null) throw new ArgumentNullException(nameof(produceWaitConnectWait));

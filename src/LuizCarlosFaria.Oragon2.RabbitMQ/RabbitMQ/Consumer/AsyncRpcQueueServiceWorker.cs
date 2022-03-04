@@ -12,11 +12,11 @@ namespace LuizCarlosFaria.Oragon2.RabbitMQ.Consumer;
 
 public class AsyncRpcQueueServiceWorker<TRequest, TResponse> : AsyncQueueServiceWorker<TRequest, Task<TResponse>>
 {
-    public AsyncRpcQueueServiceWorker(ILogger logger, IConnection connection, IAmqpSerializer serializer, ActivitySource activitySource, string queueName, ushort prefetchCount, Func<TRequest, Task<TResponse>> dispatchFunc) : base(logger, connection, serializer, activitySource, queueName, prefetchCount, dispatchFunc)
+    public AsyncRpcQueueServiceWorker(ILogger logger, IConnection connection, IAmqpSerializer serializer, ActivitySource activitySource, string queueName, ushort prefetchCount, Func<TRequest?, Task<TResponse>> dispatchFunc) : base(logger, connection, serializer, activitySource, queueName, prefetchCount, dispatchFunc)
     {
     }
 
-    protected override async Task<PostConsumeAction> Dispatch(BasicDeliverEventArgs receivedItem, Activity receiveActivity, TRequest request)
+    protected override async Task<PostConsumeAction> Dispatch(BasicDeliverEventArgs receivedItem, Activity receiveActivity, TRequest? request)
     {
         if (receivedItem is null) throw new ArgumentNullException(nameof(receivedItem));
         if (request is null) throw new ArgumentNullException(nameof(request));
@@ -29,7 +29,7 @@ public class AsyncRpcQueueServiceWorker<TRequest, TResponse> : AsyncQueueService
             return PostConsumeAction.Reject;
         }
 
-        TResponse responsePayload = default;
+        TResponse? responsePayload = default;
 
         try
         {
@@ -77,7 +77,7 @@ public class AsyncRpcQueueServiceWorker<TRequest, TResponse> : AsyncQueueService
 
         using Activity replyActivity = this.activitySource.SafeStartActivity("AsyncQueueServiceWorker.Reply", ActivityKind.Client, receiveActivity.Context);
 
-        replyActivity?.AddTag("Queue", receivedItem.BasicProperties.ReplyTo);
+        replyActivity.AddTag("Queue", receivedItem.BasicProperties.ReplyTo);
 
         IBasicProperties responseProperties = this.Model.CreateBasicProperties()
                                                         .SetMessageId()
@@ -85,13 +85,13 @@ public class AsyncRpcQueueServiceWorker<TRequest, TResponse> : AsyncQueueService
                                                         .SetTelemetry(replyActivity)
                                                         .SetCorrelationId(receivedItem.BasicProperties);
 
-        replyActivity?.AddTag("MessageId", responseProperties.MessageId);
+        replyActivity.AddTag("MessageId", responseProperties.MessageId);
 
-        replyActivity?.AddTag("CorrelationId", responseProperties.CorrelationId);
+        replyActivity.AddTag("CorrelationId", responseProperties.CorrelationId);
 
         this.Model.BasicPublish(string.Empty, receivedItem.BasicProperties.ReplyTo, responseProperties, Array.Empty<byte>());
 
-        replyActivity?.SetEndTime(DateTime.UtcNow);
+        replyActivity.SetEndTime(DateTime.UtcNow);
     }
 
 }

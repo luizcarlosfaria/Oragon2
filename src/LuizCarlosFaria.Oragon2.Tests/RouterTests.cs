@@ -5,9 +5,9 @@ using Xunit;
 namespace LuizCarlosFaria.Oragon2;
 public class RouterTests
 {
-    TypeBasedRouter typeBasedRouter = new TypeBasedRouter();
-    TypeAndFunctionBasedRouter typeAndFunctionBasedRouter = new TypeAndFunctionBasedRouter();
-    FunctionBasedRouter functionBasedRouter = new FunctionBasedRouter();
+    readonly TypeBasedRouter typeBasedRouter = new();
+    readonly TypeAndFunctionBasedRouter typeAndFunctionBasedRouter = new();
+    readonly FunctionBasedRouter functionBasedRouter = new();
 
     public RouterTests()
     {
@@ -15,9 +15,9 @@ public class RouterTests
         typeAndFunctionBasedRouter.AddRoute<Exemplo1Event>(it => new Route() { ExchangeName = "a", RoutingKey = "b" });
         functionBasedRouter.AddRoute(routable =>
         {
-            if (routable is Exemplo1Event)
-                return new Route() { ExchangeName = "a", RoutingKey = "b" };
-            return null;
+            return routable is Exemplo1Event
+            ? new Route() { ExchangeName = "a", RoutingKey = "b" }
+            : null;
         });
 
     }
