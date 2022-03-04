@@ -11,12 +11,12 @@ public class RouterTests
 
     public RouterTests()
     {
-        typeBasedRouter.AddRoute<Exemplo1Event>(new Route() { ExchangeName = "a", RoutingKey = "b" });
-        typeAndFunctionBasedRouter.AddRoute<Exemplo1Event>(it => new Route() { ExchangeName = "a", RoutingKey = "b" });
+        typeBasedRouter.AddRoute<Exemplo1Event>(new Route(exchangeName: "a", routingKey: "b"));
+        typeAndFunctionBasedRouter.AddRoute<Exemplo1Event>(it => new Route(exchangeName: "a", routingKey: "b"));
         functionBasedRouter.AddRoute(routable =>
         {
             return routable is Exemplo1Event
-            ? new Route() { ExchangeName = "a", RoutingKey = "b" }
+            ? new Route(exchangeName : "a", routingKey : "b" )
             : null;
         });
 

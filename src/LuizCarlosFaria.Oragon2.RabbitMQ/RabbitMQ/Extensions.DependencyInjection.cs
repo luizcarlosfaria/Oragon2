@@ -14,7 +14,7 @@ public static partial class Extensions
     {
         if (services is null) throw new ArgumentNullException(nameof(services));
         if (action is null) throw new ArgumentNullException(nameof(action));
-        RabbitMQConfigurationBuilder builder = new RabbitMQConfigurationBuilder(services);
+        RabbitMQConfigurationBuilder builder = new(services);
 
         action(builder);
 

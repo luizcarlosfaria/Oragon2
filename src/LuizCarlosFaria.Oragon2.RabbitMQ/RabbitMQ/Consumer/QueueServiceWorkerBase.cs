@@ -16,7 +16,7 @@ public abstract class QueueServiceWorkerBase : BackgroundService
     protected readonly ILogger logger;
     protected readonly IConnection connection;
 
-    protected IModel Model { get; private set; }
+    protected IModel? Model { get; private set; }
 
     public ushort PrefetchCount { get; }
 

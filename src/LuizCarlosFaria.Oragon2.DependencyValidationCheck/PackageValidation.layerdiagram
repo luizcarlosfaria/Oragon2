@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<layerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/SimpleShapesModel" dslVersion="1.0.0.0" Id="d4781466-3714-4dca-9a3c-9fad40a33ab5" xmlns="http://schemas.microsoft.com/VisualStudio/TeamArchitect/LayerDesigner">
+  <layers>
+    <layer Id="d619a722-ecb3-49f6-a42c-1c2c7dd41eec" name="LuizCarlosFaria.Oragon2">
+      <references>
+        <reference Id="cd895d79-7b72-46a5-90e8-7e957053f8a5" name="LuizCarlosFaria.Oragon2">
+          <ArtifactNode Label="LuizCarlosFaria.Oragon2" Category="CodeSchema_Project" Id="(Assembly=../LuizCarlosFaria.Oragon2/LuizCarlosFaria.Oragon2.csproj)">
+            <Category Ref="File" />
+          </ArtifactNode>
+          <ExpandedNode Id="(Assembly=LuizCarlosFaria.Oragon2)" Label="LuizCarlosFaria.Oragon2.dll" Category="CodeSchema_Assembly">
+            <Category Ref="FileSystem.Category.FileOfType.dll" />
+            <LinkCategory Ref="Produces" />
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+        </reference>
+      </references>
+    </layer>
+    <layer Id="ab2864ca-e40d-44c2-8f7f-72c6e8badd59" name="LuizCarlosFaria.Oragon2.RabbitMQ">
+      <dependencyToLayers>
+        <dependencyFromLayerToLayer Id="5567e97b-2852-44c2-9ea5-619afc5ee82b" direction="Forward">
+          <layerMoniker Id="d619a722-ecb3-49f6-a42c-1c2c7dd41eec" />
+        </dependencyFromLayerToLayer>
+        <dependencyFromLayerToLayer Id="839db430-e011-4984-bab9-9fda43656215" direction="Forward">
+          <layerMoniker Id="8f7f0b7f-3598-4617-961b-e65a86b8fb4c" />
+        </dependencyFromLayerToLayer>
+      </dependencyToLayers>
+      <references>
+        <reference Id="bd85d263-43ae-482f-a7f9-fa11bbe83644" name="LuizCarlosFaria.Oragon2.RabbitMQ">
+          <ArtifactNode Label="LuizCarlosFaria.Oragon2.RabbitMQ" Category="CodeSchema_Project" Id="(Assembly=../LuizCarlosFaria.Oragon2.RabbitMQ/LuizCarlosFaria.Oragon2.RabbitMQ.csproj)">
+            <Category Ref="File" />
+          </ArtifactNode>
+          <ExpandedNode Id="(Assembly=LuizCarlosFaria.Oragon2.RabbitMQ)" Label="LuizCarlosFaria.Oragon2.RabbitMQ.dll" Category="CodeSchema_Assembly">
+            <Category Ref="FileSystem.Category.FileOfType.dll" />
+            <LinkCategory Ref="Produces" />
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+        </reference>
+      </references>
+    </layer>
+    <layer Id="381e048b-41cb-4acb-be4e-d784dbcdfc1b" name="LuizCarlosFaria.Oragon2.RabbitMQ.Bus">
+      <dependencyToLayers>
+        <dependencyFromLayerToLayer Id="45f534f1-5bc5-4e0b-9ac7-809e81355f49" direction="Forward">
+          <layerMoniker Id="ab2864ca-e40d-44c2-8f7f-72c6e8badd59" />
+        </dependencyFromLayerToLayer>
+        <dependencyFromLayerToLayer Id="06e9535c-540b-4dc8-a336-16c104d352ad" direction="Forward">
+          <layerMoniker Id="8f7f0b7f-3598-4617-961b-e65a86b8fb4c" />
+        </dependencyFromLayerToLayer>
+      </dependencyToLayers>
+      <references>
+        <reference Id="604b81cb-bdc2-40d1-bb54-466f8388142f" name="LuizCarlosFaria.Oragon2.RabbitMQ.Bus">
+          <ArtifactNode Label="LuizCarlosFaria.Oragon2.RabbitMQ.Bus" Category="CodeSchema_Project" Id="(Assembly=../LuizCarlosFaria.Oragon2.RabbitMQ.Bus/LuizCarlosFaria.Oragon2.RabbitMQ.Bus.csproj)">
+            <Category Ref="File" />
+          </ArtifactNode>
+          <ExpandedNode Id="(Assembly=LuizCarlosFaria.Oragon2.RabbitMQ.Bus)" Label="LuizCarlosFaria.Oragon2.RabbitMQ.Bus.dll" Category="CodeSchema_Assembly">
+            <Category Ref="FileSystem.Category.FileOfType.dll" />
+            <LinkCategory Ref="Produces" />
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+        </reference>
+      </references>
+    </layer>
+    <layer Id="8f7f0b7f-3598-4617-961b-e65a86b8fb4c" name="LuizCarlosFaria.Oragon2.RingBuffer">
+      <references>
+        <reference Id="e0104e9b-07eb-4cd6-a026-98b8120cbba7" name="LuizCarlosFaria.Oragon2.RingBuffer">
+          <ArtifactNode Label="LuizCarlosFaria.Oragon2.RingBuffer" Category="CodeSchema_Project" Id="(Assembly=../LuizCarlosFaria.Oragon2.RingBuffer/LuizCarlosFaria.Oragon2.RingBuffer.csproj)">
+            <Category Ref="File" />
+          </ArtifactNode>
+          <ExpandedNode Id="(Assembly=LuizCarlosFaria.Oragon2.RingBuffer)" Label="LuizCarlosFaria.Oragon2.RingBuffer.dll" Category="CodeSchema_Assembly">
+            <Category Ref="FileSystem.Category.FileOfType.dll" />
+            <LinkCategory Ref="Produces" />
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+        </reference>
+      </references>
+    </layer>
+    <layer Id="ad8f8b6a-0cdc-43ab-ad2d-5d10e2c73672" name="LuizCarlosFaria.Oragon2.Tests">
+      <dependencyToLayers>
+        <dependencyFromLayerToLayer Id="3cddb613-2a0d-47cd-9911-80ebd5cec952" direction="Forward">
+          <layerMoniker Id="381e048b-41cb-4acb-be4e-d784dbcdfc1b" />
+        </dependencyFromLayerToLayer>
+        <dependencyFromLayerToLayer Id="421908fb-2d2e-43ff-9536-5658551b2ff7" direction="Forward">
+          <layerMoniker Id="8f7f0b7f-3598-4617-961b-e65a86b8fb4c" />
+        </dependencyFromLayerToLayer>
+        <dependencyFromLayerToLayer Id="3101b2c2-412e-4885-b8ca-af103e82cb0d" direction="Forward">
+          <layerMoniker Id="ab2864ca-e40d-44c2-8f7f-72c6e8badd59" />
+        </dependencyFromLayerToLayer>
+        <dependencyFromLayerToLayer Id="1b72fd10-411a-4893-9bbb-91b66b8004d2" direction="Forward">
+          <layerMoniker Id="d619a722-ecb3-49f6-a42c-1c2c7dd41eec" />
+        </dependencyFromLayerToLayer>
+      </dependencyToLayers>
+      <references>
+        <reference Id="46139806-94b9-4f3b-a4ea-b83aa304ed8e" name="LuizCarlosFaria.Oragon2.Tests">
+          <ArtifactNode Label="LuizCarlosFaria.Oragon2.Tests" Category="CodeSchema_Project" Id="(Assembly=../LuizCarlosFaria.Oragon2.Tests/LuizCarlosFaria.Oragon2.Tests.csproj)">
+            <Category Ref="File" />
+          </ArtifactNode>
+          <ExpandedNode Id="(Assembly=LuizCarlosFaria.Oragon2.Tests)" Label="LuizCarlosFaria.Oragon2.Tests.dll" Category="CodeSchema_Assembly">
+            <LinkCategory Ref="Produces" />
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+        </reference>
+      </references>
+    </layer>
+  </layers>
+</layerModel>

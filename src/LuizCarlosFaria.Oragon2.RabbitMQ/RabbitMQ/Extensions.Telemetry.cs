@@ -27,20 +27,20 @@ public static partial class Extensions
 
     public static ActivityTraceId GetTraceId(this IBasicProperties basicProperties)
     {
-        if (basicProperties is null) throw new ArgumentNullException(nameof(basicProperties));
-        return basicProperties.Headers != null && basicProperties.Headers.ContainsKey("TraceId")
+        return basicProperties is null
+            ? throw new ArgumentNullException(nameof(basicProperties))
+            : basicProperties.Headers != null && basicProperties.Headers.ContainsKey("TraceId")
             ? ActivityTraceId.CreateFromString(basicProperties.Headers.AsString("TraceId"))
             : default;
     }
 
     public static ActivitySpanId GetSpanId(this IBasicProperties basicProperties)
     {
-        if (basicProperties is null) throw new ArgumentNullException(nameof(basicProperties));
-        if (basicProperties.Headers != null && basicProperties.Headers.ContainsKey("SpanId"))
-        {
-            return ActivitySpanId.CreateFromString(basicProperties.Headers.AsString("SpanId"));
-        }
-        return default;
+        return basicProperties is null
+            ? throw new ArgumentNullException(nameof(basicProperties))
+            : basicProperties.Headers != null && basicProperties.Headers.ContainsKey("SpanId")
+            ? ActivitySpanId.CreateFromString(basicProperties.Headers.AsString("SpanId"))
+            : default;
     }
 
     public static IBasicProperties SetTelemetry(this IBasicProperties basicProperties, Activity activity)

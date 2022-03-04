@@ -13,7 +13,6 @@ namespace LuizCarlosFaria.Oragon2.RabbitMQ.Configuration;
 public class RabbitMQConfigurationBuilder
 {
     private readonly IServiceCollection services;
-    private IConfiguration configuration;
     private string configurationPrefix = "RABBITMQ";
     private int connectMaxAttempts = 8;
     private Func<int, TimeSpan> produceWaitConnectWait = (retryAttempt) => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt));
@@ -27,15 +26,6 @@ public class RabbitMQConfigurationBuilder
         where T : class, IAmqpSerializer
     {
         this.services.AddSingleton<IAmqpSerializer, T>();
-        return this;
-    }
-
-
-    public RabbitMQConfigurationBuilder WithConfiguration(IConfiguration configuration)
-    {
-        if (configuration == null) throw new ArgumentNullException(nameof(configuration));
-
-        this.configuration = configuration;
         return this;
     }
 
@@ -59,14 +49,12 @@ public class RabbitMQConfigurationBuilder
 
     public void Build()
     {
-        if (this.configuration == null) throw new ArgumentNullException(nameof(this.configuration));
-
         this.services.AddTransient(sp => sp.GetRequiredService<IConnection>().CreateModel());
 
         this.services.AddSingleton(sp =>
         {
             ConnectionFactory factory = new();
-            this.configuration.Bind(this.configurationPrefix, factory);
+            sp.GetRequiredService<IConfiguration>().Bind(this.configurationPrefix, factory);
             return factory;
         });
 

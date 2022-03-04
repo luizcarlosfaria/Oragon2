@@ -1,10 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <Import Project="./../Oragon2.targets" />
+  <Import Project="./../Oragon2.targets" />
 
-    <ItemGroup>
-      <ProjectReference Include="..\LuizCarlosFaria.Oragon2.RabbitMQ\LuizCarlosFaria.Oragon2.RabbitMQ.csproj" />
-      <ProjectReference Include="..\LuizCarlosFaria.Oragon2.RingBuffer\LuizCarlosFaria.Oragon2.RingBuffer.csproj" />
-    </ItemGroup>
-    
+  <ItemGroup>
+    <ProjectReference Include="..\LuizCarlosFaria.Oragon2.RabbitMQ\LuizCarlosFaria.Oragon2.RabbitMQ.csproj" />
+    <ProjectReference Include="..\LuizCarlosFaria.Oragon2.RingBuffer\LuizCarlosFaria.Oragon2.RingBuffer.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Update="..\LuizCarlosFaria.Oragon2.DependencyValidationCheck\PackageValidation.layerdiagram">
+      <Visible>False</Visible>
+    </AdditionalFiles>
+  </ItemGroup>
+
 </Project>

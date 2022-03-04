@@ -45,7 +45,7 @@ public class AsyncQueueServiceWorker<TRequest, TResponse> : QueueServiceWorkerBa
     private async Task Receive(object sender, BasicDeliverEventArgs receivedItem)
     {
         if (receivedItem == null) throw new ArgumentNullException(nameof(receivedItem));
-        if (receivedItem.BasicProperties == null) throw new ArgumentNullException(nameof(receivedItem.BasicProperties));
+        if (receivedItem.BasicProperties == null) throw new ArgumentNullException("receivedItem.BasicProperties");
 
         using Activity receiveActivity = this.activitySource.SafeStartActivity("AsyncQueueServiceWorker.Receive", ActivityKind.Server);
         receiveActivity.SetParentId(receivedItem.BasicProperties.GetTraceId(), receivedItem.BasicProperties.GetSpanId(), ActivityTraceFlags.Recorded);
