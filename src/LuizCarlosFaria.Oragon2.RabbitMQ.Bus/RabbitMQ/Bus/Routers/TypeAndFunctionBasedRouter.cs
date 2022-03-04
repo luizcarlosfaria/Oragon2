@@ -25,4 +25,3 @@ public class TypeAndFunctionBasedRouter : IRouteResolver
         return route ?? throw new InvalidOperationException("Route not found");
     }
 }
-

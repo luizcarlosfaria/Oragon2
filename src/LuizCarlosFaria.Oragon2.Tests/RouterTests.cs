@@ -12,17 +12,14 @@ public class RouterTests
     public RouterTests()
     {
         typeBasedRouter.AddRoute<Exemplo1Event>(new Route(exchangeName: "a", routingKey: "b"));
-        typeAndFunctionBasedRouter.AddRoute<Exemplo1Event>(it => new Route(exchangeName: "a", routingKey: "b"));
+        _ = typeAndFunctionBasedRouter.AddRoute<Exemplo1Event>(_ => new Route(exchangeName: "a", routingKey: "b"));
         functionBasedRouter.AddRoute(routable =>
         {
             return routable is Exemplo1Event
-            ? new Route(exchangeName : "a", routingKey : "b" )
+            ? new Route(exchangeName: "a", routingKey: "b")
             : null;
         });
-
     }
-
-
 
     [Fact]
     public void TesteSuccessResolution()
@@ -36,12 +33,9 @@ public class RouterTests
         Assert.Equal("b", typeAndFunctionBasedRouter.ResolveRoute(evento).RoutingKey);
         Assert.Equal("a", typeAndFunctionBasedRouter.ResolveRoute(evento).ExchangeName);
 
-
         Assert.Equal("b", functionBasedRouter.ResolveRoute(evento).RoutingKey);
         Assert.Equal("a", functionBasedRouter.ResolveRoute(evento).ExchangeName);
     }
-
-
 
     [Fact]
     public void TesteNotFoundResolutions()
@@ -53,5 +47,4 @@ public class RouterTests
         Assert.Throws<InvalidOperationException>(() => this.typeAndFunctionBasedRouter.ResolveRoute(evento));
         Assert.Throws<InvalidOperationException>(() => this.functionBasedRouter.ResolveRoute(evento));
     }
-
 }

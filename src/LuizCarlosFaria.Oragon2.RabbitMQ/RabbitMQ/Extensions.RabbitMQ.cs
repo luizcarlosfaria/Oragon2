@@ -43,7 +43,7 @@ public static partial class Extensions
     public static IBasicProperties SetReplyTo(this IBasicProperties basicProperties, string? replyTo = null)
     {
         if (basicProperties is null) throw new ArgumentNullException(nameof(basicProperties));
-        
+
         if (!string.IsNullOrEmpty(replyTo))
         {
             basicProperties.ReplyTo = replyTo;
@@ -55,7 +55,7 @@ public static partial class Extensions
     public static IBasicProperties SetAppId(this IBasicProperties basicProperties, string? appId = null)
     {
         if (basicProperties is null) throw new ArgumentNullException(nameof(basicProperties));
-        
+
         if (!string.IsNullOrEmpty(appId))
         {
             basicProperties.AppId = appId;
@@ -71,7 +71,7 @@ public static partial class Extensions
 
     public static string? AsString(this IDictionary<string, object>? dic, string key)
     {
-        return dic != null && dic.ContainsKey(key) ? dic[key].AsString() : null;
+        return dic?.ContainsKey(key) == true ? dic[key].AsString() : null;
     }
 
     public static List<string?> AsStringList(this object objectToConvert)
@@ -100,7 +100,6 @@ public static partial class Extensions
         return basicProperties;
     }
 
-
     public static bool TryReconstructException(this IBasicProperties basicProperties, out AmqpRpcRemoteException remoteException)
     {
         remoteException = default!;
@@ -110,13 +109,11 @@ public static partial class Extensions
             string? exceptionMessage = basicProperties.Headers.AsString("exception.message");
             string? exceptionStackTrace = basicProperties.Headers.AsString("exception.stacktrace");
             Exception exceptionInstance = (Exception)Activator.CreateInstance(Type.GetType(exceptionTypeString ?? "x") ?? typeof(Exception), exceptionMessage)!;
-            remoteException = new AmqpRpcRemoteException("Remote consumer report a exception during execution", exceptionStackTrace, exceptionInstance);
+            remoteException = new AmqpRpcRemoteException("Remote consumer report a exception during execution", exceptionInstance, exceptionStackTrace);
             return true;
         }
         return false;
     }
-
-
 
     public static List<object> GetDeathHeader(this IBasicProperties basicProperties)
     {

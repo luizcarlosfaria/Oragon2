@@ -5,8 +5,7 @@ using System.Collections.Generic;
 namespace LuizCarlosFaria.Oragon2.RabbitMQ.Bus.Routers;
 public class FunctionBasedRouter : IRouteResolver
 {
-    private List<Func<IRouteable, Route?>> Routes { get; set; } = new();
-
+    private List<Func<IRouteable, Route?>> Routes { get; } = new();
 
     public FunctionBasedRouter AddRoute(Func<IRouteable, Route?> func)
     {
@@ -28,4 +27,3 @@ public class FunctionBasedRouter : IRouteResolver
         throw new InvalidOperationException("Route not found");
     }
 }
-

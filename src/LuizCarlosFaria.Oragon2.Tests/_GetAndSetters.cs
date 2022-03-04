@@ -5,10 +5,8 @@ using Xunit;
 
 namespace LuizCarlosFaria.Oragon2;
 
-
 public class GetAndSetters
 {
-
     [Theory]
     [InlineData(typeof(TypeBasedRouter))]
     [InlineData(typeof(TypeAndFunctionBasedRouter))]
@@ -24,7 +22,4 @@ public class GetAndSetters
             property.SetValue(instance, oldValue);
         }
     }
-
-
-
 }

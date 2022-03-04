@@ -7,10 +7,13 @@ public class AmqpRpcRemoteException : Exception
 {
     private readonly string remoteStackTrace;
 
-    public AmqpRpcRemoteException() : this(message: null, remoteStackTrace: null, inner: null) { }
+    public AmqpRpcRemoteException() : this(message: null, inner: null, remoteStackTrace: null) { }
 
+    public AmqpRpcRemoteException(string? message) : this(message: message, inner: null, remoteStackTrace: null) { }
 
-    public AmqpRpcRemoteException(string? message, string? remoteStackTrace, Exception? inner) : base(message, inner)
+    public AmqpRpcRemoteException(string? message, Exception? innerException) : this(message: message, inner: innerException, remoteStackTrace: null) { }
+
+    public AmqpRpcRemoteException(string? message, Exception? inner, string? remoteStackTrace) : base(message, inner)
     {
         this.remoteStackTrace = remoteStackTrace ?? throw new ArgumentNullException(nameof(remoteStackTrace));
     }
@@ -21,8 +24,5 @@ public class AmqpRpcRemoteException : Exception
       System.Runtime.Serialization.SerializationInfo info,
       System.Runtime.Serialization.StreamingContext context) : base(info, context)
     {
-
     }
-
-
 }

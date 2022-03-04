@@ -7,9 +7,7 @@ namespace LuizCarlosFaria.Oragon2.RabbitMQ.Serialization;
 
 public class NewtonsoftAmqpSerializer : AmqpBaseSerializer
 {
-
     public NewtonsoftAmqpSerializer(ActivitySource activitySource) : base(activitySource, "NewtonsoftAmqpSerializer") { }
-
 
     protected override TResponse DeserializeInternal<TResponse>(IBasicProperties basicProperties, ReadOnlyMemory<byte> body)
     {

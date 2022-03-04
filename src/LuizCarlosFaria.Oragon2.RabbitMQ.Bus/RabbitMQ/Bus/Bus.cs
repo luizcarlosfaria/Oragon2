@@ -64,5 +64,4 @@ public class Bus : IEventBus, ICommandBus
 
         currentActivity.SetEndTime(DateTime.UtcNow);
     }
-
 }

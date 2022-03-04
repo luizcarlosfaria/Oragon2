@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 
 namespace LuizCarlosFaria.Oragon2.RabbitMQ.Consumer;
 
-
 public abstract class QueueServiceWorkerBase : BackgroundService
 {
     protected readonly ILogger logger;
@@ -31,7 +30,6 @@ public abstract class QueueServiceWorkerBase : BackgroundService
         this.QueueName = queueName;
         this.PrefetchCount = prefetchCount;
     }
-
 
     #endregion
 
@@ -56,7 +54,6 @@ public abstract class QueueServiceWorkerBase : BackgroundService
 
         this.Model.BasicCancelNoWait(consumerTag);
     }
-
 
     protected virtual void WaitQueueCreation()
     {
@@ -85,6 +82,4 @@ public abstract class QueueServiceWorkerBase : BackgroundService
     }
 
     protected abstract IBasicConsumer BuildConsumer();
-
-
 }

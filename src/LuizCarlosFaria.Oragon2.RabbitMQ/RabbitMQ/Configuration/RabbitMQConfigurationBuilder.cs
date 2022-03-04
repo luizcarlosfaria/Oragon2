@@ -85,9 +85,5 @@ public class RabbitMQConfigurationBuilder
                    return connection;
                })
        );
-
     }
-
-
-
 }

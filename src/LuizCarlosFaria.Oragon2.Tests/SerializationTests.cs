@@ -13,7 +13,6 @@ public class SerializationTests
 {
     readonly ActivitySource activitySource = new("a", "b");
 
-
     [Theory]
     [InlineData(typeof(NewtonsoftAmqpSerializer))]
     [InlineData(typeof(SystemTextJsonAmqpSerializer))]
@@ -42,7 +41,6 @@ public class SerializationTests
             BasicProperties = mock.Object
         });
 
-
         Assert.Equal(objeto1.Int, objeto2.Int);
         Assert.Equal(objeto1.String, objeto2.String);
         Assert.Equal(objeto1.DateTime, objeto2.DateTime);
@@ -50,7 +48,6 @@ public class SerializationTests
         Assert.Equal(objeto1.Decimal, objeto2.Decimal);
         Assert.Equal(objeto1.TimeSpan, objeto2.TimeSpan);
     }
-
 
     [Theory]
     [InlineData(typeof(NewtonsoftAmqpSerializer))]
@@ -61,14 +58,8 @@ public class SerializationTests
 
         var mock = new Mock<IBasicProperties>();
 
-        Assert.ThrowsAny<Exception>(() =>
-        {
-            serializer.Serialize(mock.Object, new SqlConnection());
-        });
-
-
+        Assert.ThrowsAny<Exception>(() => serializer.Serialize(mock.Object, new SqlConnection()));
     }
-
 
     [Theory]
     [InlineData(typeof(NewtonsoftAmqpSerializer))]
@@ -88,5 +79,4 @@ public class SerializationTests
             });
         });
     }
-
 }

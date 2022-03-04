@@ -6,8 +6,7 @@ namespace LuizCarlosFaria.Oragon2.RabbitMQ.Bus.Routers;
 
 public class TypeBasedRouter : IRouteResolver
 {
-    private Dictionary<Type, Route> Routes { get; set; } = new Dictionary<Type, Route>();
-
+    private Dictionary<Type, Route> Routes { get; } = new Dictionary<Type, Route>();
 
     public TypeBasedRouter AddRoute<T>(Route route)
     {
@@ -27,4 +26,3 @@ public class TypeBasedRouter : IRouteResolver
             : throw new InvalidOperationException($"Route not found for type {type}.");
     }
 }
-

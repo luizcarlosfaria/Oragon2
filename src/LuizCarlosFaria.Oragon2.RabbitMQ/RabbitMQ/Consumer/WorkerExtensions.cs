@@ -11,7 +11,6 @@ namespace LuizCarlosFaria.Oragon2.RabbitMQ.Consumer;
 
 public static class WorkerExtensions
 {
-
     /// <summary>
     /// Create a new QueueServiceWorker to bind a queue with an function
     /// </summary>

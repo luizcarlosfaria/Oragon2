@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace LuizCarlosFaria.Oragon2.RabbitMQ.Consumer;
 
-
 public class AsyncRpcQueueServiceWorker<TRequest, TResponse> : AsyncQueueServiceWorker<TRequest, Task<TResponse>>
 {
     public AsyncRpcQueueServiceWorker(ILogger logger, IConnection connection, IAmqpSerializer serializer, ActivitySource activitySource, string queueName, ushort prefetchCount, Func<TRequest?, Task<TResponse>> dispatchFunc) : base(logger, connection, serializer, activitySource, queueName, prefetchCount, dispatchFunc)
@@ -56,7 +55,7 @@ public class AsyncRpcQueueServiceWorker<TRequest, TResponse> : AsyncQueueService
 
         using Activity replyActivity = this.activitySource.SafeStartActivity("AsyncQueueServiceWorker.Reply", ActivityKind.Client, receiveActivity.Context);
 
-        IBasicProperties responseProperties = this.Model.CreateBasicProperties()
+        IBasicProperties responseProperties = this.Model!.CreateBasicProperties()
                                                         .SetMessageId()
                                                         .SetTelemetry(replyActivity)
                                                         .SetCorrelationId(receivedItem.BasicProperties);
@@ -79,7 +78,7 @@ public class AsyncRpcQueueServiceWorker<TRequest, TResponse> : AsyncQueueService
 
         replyActivity.AddTag("Queue", receivedItem.BasicProperties.ReplyTo);
 
-        IBasicProperties responseProperties = this.Model.CreateBasicProperties()
+        IBasicProperties responseProperties = this.Model!.CreateBasicProperties()
                                                         .SetMessageId()
                                                         .SetException(exception)
                                                         .SetTelemetry(replyActivity)
@@ -93,5 +92,4 @@ public class AsyncRpcQueueServiceWorker<TRequest, TResponse> : AsyncQueueService
 
         replyActivity.SetEndTime(DateTime.UtcNow);
     }
-
 }

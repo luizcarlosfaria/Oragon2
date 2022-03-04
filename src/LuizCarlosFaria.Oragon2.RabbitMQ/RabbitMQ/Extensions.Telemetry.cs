@@ -8,7 +8,6 @@ namespace AmqpAdapters;
 
 public static partial class Extensions
 {
-
     public static Activity SafeStartActivity(this ActivitySource activitySource, [CallerMemberName] string name = "", ActivityKind kind = ActivityKind.Internal)
     {
         if (activitySource is null) throw new ArgumentNullException(nameof(activitySource));
@@ -29,7 +28,7 @@ public static partial class Extensions
     {
         return basicProperties is null
             ? throw new ArgumentNullException(nameof(basicProperties))
-            : basicProperties.Headers != null && basicProperties.Headers.ContainsKey("TraceId")
+            : basicProperties.Headers?.ContainsKey("TraceId") == true
             ? ActivityTraceId.CreateFromString(basicProperties.Headers.AsString("TraceId"))
             : default;
     }
@@ -38,7 +37,7 @@ public static partial class Extensions
     {
         return basicProperties is null
             ? throw new ArgumentNullException(nameof(basicProperties))
-            : basicProperties.Headers != null && basicProperties.Headers.ContainsKey("SpanId")
+            : basicProperties.Headers?.ContainsKey("SpanId") == true
             ? ActivitySpanId.CreateFromString(basicProperties.Headers.AsString("SpanId"))
             : default;
     }
@@ -76,5 +75,4 @@ public static partial class Extensions
         }
         return basicProperties;
     }
-
 }

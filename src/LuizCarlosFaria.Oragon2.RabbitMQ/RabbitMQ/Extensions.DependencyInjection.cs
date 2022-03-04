@@ -23,7 +23,6 @@ public static partial class Extensions
         return services;
     }
 
-
     public static IServiceCollection AddAmqpRpcClient(this IServiceCollection services)
     {
         if (services is null) throw new ArgumentNullException(nameof(services));
@@ -39,5 +38,4 @@ public static partial class Extensions
 
         return services;
     }
-
 }

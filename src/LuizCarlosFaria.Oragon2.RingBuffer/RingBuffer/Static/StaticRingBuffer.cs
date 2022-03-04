@@ -13,7 +13,6 @@ public partial class StaticRingBuffer<T> : IRingBuffer<T>
 
     public StaticRingBuffer(ILogger<StaticRingBuffer<T>> logger, int capacity, Func<T> factoryFunc, Func<T, bool> checkFunc, Action<T> disposeAction) : this(logger, capacity, factoryFunc, checkFunc, disposeAction, TimeSpan.FromMilliseconds(50))
     {
-
     }
 
     public StaticRingBuffer(ILogger<StaticRingBuffer<T>> logger, int capacity, Func<T> factoryFunc, Func<T, bool> checkFunc, Action<T> disposeAction, TimeSpan waitTime)
@@ -23,7 +22,7 @@ public partial class StaticRingBuffer<T> : IRingBuffer<T>
         this.FactoryFunc = factoryFunc ?? throw new ArgumentNullException(nameof(factoryFunc), "factoryFunc can't be null");
         this.CheckFunc = checkFunc ?? throw new ArgumentNullException(nameof(checkFunc), "checkFunc can't be null");
         this.DisposeAction = disposeAction ?? throw new ArgumentNullException(nameof(disposeAction), "disposeAction can't be null");
-        this.WaitTime = waitTime.Ticks > 0 ? waitTime : throw new ArgumentOutOfRangeException(nameof(waitTime), "waitTime can't be null"); ;
+        this.WaitTime = waitTime.Ticks > 0 ? waitTime : throw new ArgumentOutOfRangeException(nameof(waitTime), "waitTime can't be null");
         this.VirtualCount = 0;
         this.Buffer = new ConcurrentQueue<T>();
 
@@ -33,7 +32,6 @@ public partial class StaticRingBuffer<T> : IRingBuffer<T>
             this.VirtualCount++;
         }
     }
-
 
     public int Capacity { get; }
 

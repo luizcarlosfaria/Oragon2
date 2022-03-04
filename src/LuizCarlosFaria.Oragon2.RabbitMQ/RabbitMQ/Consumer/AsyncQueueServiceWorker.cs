@@ -9,18 +9,14 @@ using System.Threading.Tasks;
 
 namespace LuizCarlosFaria.Oragon2.RabbitMQ.Consumer;
 
-
 public class AsyncQueueServiceWorker<TRequest, TResponse> : QueueServiceWorkerBase
     where TResponse : Task
 {
-
     protected readonly IAmqpSerializer serializer;
     protected readonly ActivitySource activitySource;
     protected readonly Func<TRequest?, TResponse> dispatchFunc;
 
-
     #region Constructors 
-
 
     public AsyncQueueServiceWorker(ILogger logger, IConnection connection, IAmqpSerializer serializer, ActivitySource activitySource, string queueName, ushort prefetchCount, Func<TRequest?, TResponse> dispatchFunc)
         : base(logger, connection, queueName, prefetchCount)
@@ -31,7 +27,6 @@ public class AsyncQueueServiceWorker<TRequest, TResponse> : QueueServiceWorkerBa
     }
 
     #endregion
-
 
     protected override IBasicConsumer BuildConsumer()
     {
@@ -45,7 +40,7 @@ public class AsyncQueueServiceWorker<TRequest, TResponse> : QueueServiceWorkerBa
     private async Task Receive(object sender, BasicDeliverEventArgs receivedItem)
     {
         if (receivedItem == null) throw new ArgumentNullException(nameof(receivedItem));
-        if (receivedItem.BasicProperties == null) throw new ArgumentNullException("receivedItem.BasicProperties");
+        if (receivedItem.BasicProperties == null) throw new ArgumentException("receivedItem.BasicProperties");
 
         using Activity receiveActivity = this.activitySource.SafeStartActivity("AsyncQueueServiceWorker.Receive", ActivityKind.Server);
         receiveActivity.SetParentId(receivedItem.BasicProperties.GetTraceId(), receivedItem.BasicProperties.GetSpanId(), ActivityTraceFlags.Recorded);
@@ -71,9 +66,9 @@ public class AsyncQueueServiceWorker<TRequest, TResponse> : QueueServiceWorkerBa
         switch (postReceiveAction)
         {
             case PostConsumeAction.None: throw new InvalidOperationException("None is unsupported");
-            case PostConsumeAction.Ack: this.Model.BasicAck(receivedItem.DeliveryTag, false); break;
-            case PostConsumeAction.Nack: this.Model.BasicNack(receivedItem.DeliveryTag, false, false); break;
-            case PostConsumeAction.Reject: this.Model.BasicReject(receivedItem.DeliveryTag, false); break;
+            case PostConsumeAction.Ack: this.Model!.BasicAck(receivedItem.DeliveryTag, false); break;
+            case PostConsumeAction.Nack: this.Model!.BasicNack(receivedItem.DeliveryTag, false, false); break;
+            case PostConsumeAction.Reject: this.Model!.BasicReject(receivedItem.DeliveryTag, false); break;
         }
 
         receiveActivity?.SetEndTime(DateTime.UtcNow);
@@ -120,4 +115,3 @@ public enum PostConsumeAction
     Nack,
     Reject
 }
-

@@ -2,7 +2,7 @@
 
 namespace LuizCarlosFaria.Oragon2.RingBuffer.Static;
 
-public class StaticRingBufferAccquisitonController<T> : IAccquisitonController<T>
+internal class StaticRingBufferAccquisitonController<T> : IAccquisitonController<T>
 {
     private readonly StaticRingBuffer<T> ringBuffer;
     private readonly ILogger<StaticRingBuffer<T>> logger;
@@ -20,7 +20,6 @@ public class StaticRingBufferAccquisitonController<T> : IAccquisitonController<T
         this.checkFunc = checkFunc;
         this.disposeAction = disposeAction;
         this.Instance = this.GetWorkerInstance();
-
     }
 
     private T GetWorkerInstance()
@@ -34,7 +33,6 @@ public class StaticRingBufferAccquisitonController<T> : IAccquisitonController<T
             this.logger.LogTrace("RingBuffer | Waiting... VirtualCount:{count} Capacity:{capacity}", this.ringBuffer.VirtualCount, this.ringBuffer.Capacity);
 
             Thread.Sleep(this.waitTime);
-
         }
         this.logger.LogTrace("RingBuffer | Acquired! VirtualCount:{count} Capacity:{capacity}", this.ringBuffer.VirtualCount, this.ringBuffer.Capacity);
 
@@ -46,7 +44,9 @@ public class StaticRingBufferAccquisitonController<T> : IAccquisitonController<T
     public void Dispose()
     {
         if (this.checkFunc(this.Instance))
+        {
             this.ringBuffer.Enqueue(this.Instance);
+        }
         else
         {
             this.ringBuffer.Enqueue(this.factoryFunc());

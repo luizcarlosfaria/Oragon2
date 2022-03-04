@@ -31,7 +31,7 @@ public partial class SimpleAmqpRpc
         this.Send(exchangeName, routingKey, requestModel, null);
     }
 
-    public async Task<TResponse> SendAndReceiveAsync<TRequest, TResponse>(string exchangeName, string routingKey, TRequest requestModel, TimeSpan? receiveTimeout = null)
+    public async Task<TResponse?> SendAndReceiveAsync<TRequest, TResponse>(string exchangeName, string routingKey, TRequest requestModel, TimeSpan? receiveTimeout = null)
     {
         using Activity currentActivity = this.activitySource.SafeStartActivity("SimpleAmqpRpc.SendAndReceiveAsync", ActivityKind.Internal);
 
@@ -41,11 +41,11 @@ public partial class SimpleAmqpRpc
         currentActivity.SetTag("Request.RoutingKey", routingKey);
         currentActivity.SetTag("Response.Queue", queue.QueueName);
 
-        Task sendTask = Task.Run(() => { this.Send(exchangeName, routingKey, requestModel, queue.QueueName); });
+        Task sendTask = Task.Run(() => this.Send(exchangeName, routingKey, requestModel, queue.QueueName));
 
-        TResponse responseModel = default!;
+        TResponse? responseModel = default!;
 
-        Task receiveTask = Task.Run(() => { responseModel = this.Receive<TResponse>(queue, receiveTimeout ?? this.defaultTimeout); });
+        Task receiveTask = Task.Run(() => responseModel = this.Receive<TResponse>(queue, receiveTimeout ?? this.defaultTimeout));
 
         await Task.WhenAll(sendTask, receiveTask);
 
@@ -79,7 +79,7 @@ public partial class SimpleAmqpRpc
         currentActivity.SetEndTime(DateTime.UtcNow);
     }
 
-    protected virtual TResponse Receive<TResponse>(QueueDeclareOk queue, TimeSpan receiveTimeout)
+    protected virtual TResponse? Receive<TResponse>(QueueDeclareOk queue, TimeSpan receiveTimeout)
     {
         using (BlockingCollection<AmqpResponse<TResponse>> localQueue = new())
         {

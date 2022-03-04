@@ -11,7 +11,7 @@ public abstract class AmqpBaseSerializer : IAmqpSerializer
     private readonly ActivitySource activitySource;
     private readonly string name;
 
-    public AmqpBaseSerializer(ActivitySource activitySource, string name)
+    protected AmqpBaseSerializer(ActivitySource activitySource, string name)
     {
         this.activitySource = activitySource;
         this.name = name;
@@ -20,7 +20,6 @@ public abstract class AmqpBaseSerializer : IAmqpSerializer
     protected abstract T DeserializeInternal<T>(IBasicProperties basicProperties, ReadOnlyMemory<byte> body);
 
     protected abstract byte[] SerializeInternal<T>(IBasicProperties basicProperties, T objectToSerialize);
-
 
     public T Deserialize<T>(BasicDeliverEventArgs eventArgs)
     {

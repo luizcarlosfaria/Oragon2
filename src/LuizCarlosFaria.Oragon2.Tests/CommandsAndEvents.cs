@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace LuizCarlosFaria.Oragon2;
 
-
 public class ObjectToSerialize
 {
     public int Int { get; set; }
@@ -18,7 +17,6 @@ public class ObjectToSerialize
     public TimeSpan? TimeSpan { get; set; }
 }
 
-
 public class SendEmailCommand : ICommand
 {
     public string? ToName { get; set; }
@@ -26,7 +24,6 @@ public class SendEmailCommand : ICommand
     public string? Subject { get; set; }
     public string? Body { get; set; }
 }
-
 
 public class Exemplo1Event : IEvent
 {
