@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace LuizCarlosFaria.Oragon2.RabbitMQ.Bus.Routers;
 public class TypeAndFunctionBasedRouter : IRouteResolver
 {
-    private Dictionary<Type, Func<IRouteable, Route>> Routes { get; set; } = new Dictionary<Type, Func<IRouteable, Route>>();
+    private Dictionary<Type, Func<IRouteable, Route>> Routes { get; } = new Dictionary<Type, Func<IRouteable, Route>>();
 
     public TypeAndFunctionBasedRouter AddRoute<T>(Func<IRouteable, Route> func)
     {

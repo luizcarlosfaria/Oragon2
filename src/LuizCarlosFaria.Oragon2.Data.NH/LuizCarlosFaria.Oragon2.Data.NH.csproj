@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <Import Project="./../Oragon2.targets" />
+
+    <ItemGroup>
+        <PackageReference Include="NHibernate" Version="5.3.11" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\LuizCarlosFaria.Oragon2.Data\LuizCarlosFaria.Oragon2.Data.csproj" />
+      <ProjectReference Include="..\LuizCarlosFaria.Oragon2\LuizCarlosFaria.Oragon2.csproj" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <AdditionalFiles Update="..\LuizCarlosFaria.Oragon2.DependencyValidationCheck\PackageValidation.layerdiagram">
+            <Visible>False</Visible>
+        </AdditionalFiles>
+    </ItemGroup>
+
+
+</Project>

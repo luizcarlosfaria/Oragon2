@@ -66,7 +66,13 @@ public static class WorkerExtensions
                     sp.GetRequiredService<ActivitySource>(),
                     queueName,
                     prefetchCount,
-                    (request) => functionToExecute(sp.GetRequiredService<TService>(), request)
+                    async (request) =>
+                        {
+                            using (IServiceScope serviceScope = sp.GetRequiredService<IServiceScopeFactory>().CreateScope())
+                            {
+                                await functionToExecute(serviceScope.ServiceProvider.GetRequiredService<TService>(), request);
+                            }
+                        }
                 )
             );
     }

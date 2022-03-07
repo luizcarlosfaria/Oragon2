@@ -34,6 +34,14 @@
     </Validate>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\LuizCarlosFaria.Oragon2.Data.NH\LuizCarlosFaria.Oragon2.Data.NH.csproj">
+      <Name>LuizCarlosFaria.Oragon2.Data.NH</Name>
+      <Project>{3dae0978-afb2-4ed2-b741-f0c55bb2d191}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\LuizCarlosFaria.Oragon2.Data\LuizCarlosFaria.Oragon2.Data.csproj">
+      <Name>LuizCarlosFaria.Oragon2.Data</Name>
+      <Project>{806793ce-aff5-473f-80c5-ba20602d323e}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\LuizCarlosFaria.Oragon2.RabbitMQ.Bus\LuizCarlosFaria.Oragon2.RabbitMQ.Bus.csproj">
       <Name>LuizCarlosFaria.Oragon2.RabbitMQ.Bus</Name>
       <Project>{8c742b20-446f-4ccd-9506-a073fc1f329f}</Project>

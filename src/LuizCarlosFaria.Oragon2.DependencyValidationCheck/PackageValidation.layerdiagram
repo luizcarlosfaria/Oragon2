@@ -100,5 +100,36 @@
         </reference>
       </references>
     </layer>
+    <layer Id="dbc54667-4f92-4d8c-90d6-d948f24dba69" name="LuizCarlosFaria.Oragon2.Data">
+      <references>
+        <reference Id="ac5c9ade-d939-4b23-9aa7-19ba58ad415c" name="LuizCarlosFaria.Oragon2.Data">
+          <ArtifactNode Label="LuizCarlosFaria.Oragon2.Data" Category="CodeSchema_Project" Id="(Assembly=../LuizCarlosFaria.Oragon2.Data/LuizCarlosFaria.Oragon2.Data.csproj)">
+            <Category Ref="File" />
+          </ArtifactNode>
+          <ExpandedNode Id="(Assembly=LuizCarlosFaria.Oragon2.Data)" Label="LuizCarlosFaria.Oragon2.Data.dll" Category="CodeSchema_Assembly">
+            <LinkCategory Ref="Produces" />
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+        </reference>
+      </references>
+    </layer>
+    <layer Id="e3303a68-4026-4832-9f84-f82f0df2f71c" name="LuizCarlosFaria.Oragon2.Data.NH">
+      <dependencyToLayers>
+        <dependencyFromLayerToLayer Id="ae97a21c-ae5c-4cc4-8e91-88e12051bc1a" direction="Forward">
+          <layerMoniker Id="dbc54667-4f92-4d8c-90d6-d948f24dba69" />
+        </dependencyFromLayerToLayer>
+      </dependencyToLayers>
+      <references>
+        <reference Id="57895d0e-b0fe-410e-a59b-b224a68aed80" name="LuizCarlosFaria.Oragon2.Data.NH">
+          <ArtifactNode Label="LuizCarlosFaria.Oragon2.Data.NH" Category="CodeSchema_Project" Id="(Assembly=../LuizCarlosFaria.Oragon2.Data.NH/LuizCarlosFaria.Oragon2.Data.NH.csproj)">
+            <Category Ref="File" />
+          </ArtifactNode>
+          <ExpandedNode Id="(Assembly=LuizCarlosFaria.Oragon2.Data.NH)" Label="LuizCarlosFaria.Oragon2.Data.NH.dll" Category="CodeSchema_Assembly">
+            <LinkCategory Ref="Produces" />
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+        </reference>
+      </references>
+    </layer>
   </layers>
 </layerModel>
